@@ -122,3 +122,6 @@ shopt -s histappend
 bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
+# Speed environment for rspec
+alias rspeed='RAILS_ENV=speed rspec'
+
