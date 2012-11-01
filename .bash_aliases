@@ -8,3 +8,6 @@ alias cd..='cd ..'
 alias c='clear'
 emacshax () { emacsclient -n "$1" & }
 alias e='emacshax'
+
+# Ruby on Rails specific
+alias rake_migrate='rake db:migrate & rake db:test:prepare'
