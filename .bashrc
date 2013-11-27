@@ -122,6 +122,43 @@ shopt -s histappend
 bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
-# Speed environment for rspec
-alias rspeed='RAILS_ENV=speed rspec'
+# Start emacs server if it isn't running
+# http://stackoverflow.com/a/5578718
+export ALTERNATE_EDITOR=""
 
+export TERM=xterm-256color
+
+# Java/tomcat stuff :(
+export JAVA_HOME=/usr/lib/jvm/default-java
+export CATALINA_HOME=/usr/share/tomcat7
+
+
+# Restore postgres backup
+function pglocal {
+	if [ "$1" = "" ]; then
+		echo "Run like this:"
+		echo "pglocal USER DATABASE PATH/TO/FILE"
+	else
+		pg_restore --verbose --clean --no-acl --no-owner -h localhost -U $1 -d $2 $3
+	fi
+}
+
+# Copy a postgres database
+function pgcopy {
+    if [ "$1" = "" ]; then
+        echo "Run like this:"
+        echo "pgcopy original_database name_of_copy_database"
+    else
+        ORIGINAL=$1
+        COPY=$2
+        echo "Creating database $COPY..."
+        psql $ORIGINAL -c "create database $COPY"
+        echo "Dumping original database to $ORIGINAL.dump"
+        pg_dump -Fc $ORIGINAL > "$ORIGINAL.dump"
+        echo "Restoring dump..."
+        pg_restore -d $COPY "$ORIGINAL.dump"
+        echo "Removing dumpfile..."
+        rm "$ORIGINAL.dump"
+        echo "Done!"
+    fi
+}
